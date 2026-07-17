@@ -18,7 +18,7 @@ def simular_backtest():
     timeframe_m15 = mt5.TIMEFRAME_M15
     timeframe_h4 = mt5.TIMEFRAME_H1 # Cambiado a H1 para que el sesgo cambie más rápido y de más señales
     n_velas = 2000 # ~1 Mes de velas M15
-    balance_inicial = 1000.0
+    balance_inicial = 200.0
     lote = config.LOT_SIZE
     
     print(f"📥 Descargando {n_velas} velas M15 y H4 de {symbol}...")
