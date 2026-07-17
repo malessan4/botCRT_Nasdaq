@@ -19,6 +19,8 @@ RISK_REWARD_RATIO = 2.0 # TP por defecto si no hay liquidez cercana
 MOVE_TO_BREAKEVEN_RATIO = 1.0 # Mover SL a precio de entrada cuando el precio alcance 1:1 R/R
 SL_BUFFER_PIPS = 10.0 # Distancia extra de respiro para el Stop Loss (aumentado para la volatilidad de Nasdaq)
 BREAKEVEN_PLUS_PIPS = 2.0 # Puntos extra a sumar al BreakEven para cubrir comisiones en Nasdaq
+MAX_PENDING_ORDERS = 3 # Límite máximo de órdenes pendientes para evitar sobre-exposición
+PENDING_ORDER_TIMEOUT_MINUTES = 30 # Tiempo de espera mínimo antes de colocar otra orden pendiente
 
 # Configuración de Estrategia SMC
 ATR_PERIOD = 14
