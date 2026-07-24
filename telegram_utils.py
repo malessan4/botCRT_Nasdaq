@@ -6,6 +6,9 @@ def enviar_telegram(mensaje):
     Envía un mensaje a Telegram usando las credenciales en config.py.
     Retorna True si fue exitoso, False en caso contrario.
     """
+    if not getattr(config, 'TELEGRAM_ENABLED', True):
+        return False  # Telegram desactivado en config.py
+
     if not config.TELEGRAM_TOKEN or not config.TELEGRAM_CHAT_ID:
         print("Telegram: Token o Chat ID no configurado.")
         return False
