@@ -66,6 +66,31 @@ def manage_open_positions():
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# LIMPIEZA DE ÓRDENES PENDIENTES CADUCADAS
+# ─────────────────────────────────────────────────────────────────────────────
+
+def clean_expired_pending_orders():
+    """
+    Revisa las órdenes pendientes y elimina aquellas que lleven más de
+    PENDING_ORDER_EXPIRY_HOURS (ej. 8 horas) sin haberse ejecutado.
+    """
+    pending = mt5_client.get_pending_orders()
+    if not pending:
+        return
+        
+    current_time = time.time()
+    expiry_seconds = getattr(config, 'PENDING_ORDER_EXPIRY_HOURS', 8.0) * 3600
+    
+    for order in pending:
+        if order.symbol == config.SYMBOL:
+            if (current_time - order.time_setup) > expiry_seconds:
+                print(f"[{config.SYMBOL}] Orden pendiente {order.ticket} expirada tras {getattr(config, 'PENDING_ORDER_EXPIRY_HOURS', 8.0)} horas. Eliminando...")
+                res = mt5_client.cancel_pending_order(order.ticket)
+                if res and res.retcode == mt5.TRADE_RETCODE_DONE:
+                    safe_sym = config.SYMBOL.replace('_', '\\_')
+                    telegram_utils.enviar_telegram(f"🗑 *Orden Expirada*\nSímbolo: {safe_sym}\nSe eliminó la orden {order.ticket} por superar el límite de tiempo en espera.")
+
+# ─────────────────────────────────────────────────────────────────────────────
 # CONTROL DE MÁXIMO 3 OPERACIONES POR NIVEL DE PRECIO
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -111,6 +136,9 @@ def main():
         while True:
             # 1. Gestionar posiciones abiertas (BreakEven)
             manage_open_positions()
+            
+            # Limpiar órdenes caducadas
+            clean_expired_pending_orders()
 
             # 2. Obtener datos HTF para el sesgo CRT (siempre H4 > H2 > H1)
             df_h4 = mt5_client.get_data(config.SYMBOL, mt5.TIMEFRAME_H4, n_candles=50)

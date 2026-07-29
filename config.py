@@ -24,6 +24,7 @@ MIN_TP_USD = 15.0 # Take Profit fijo: exactamente +15 USD por operación
 MAX_TP_USD = 15.0 # Take Profit fijo: exactamente +15 USD por operación
 MAX_PENDING_ORDERS = 3 # Máximo 3 órdenes (pendientes + abiertas) en el mismo nivel de precio
 PENDING_ORDER_TIMEOUT_MINUTES = 30 # Tiempo de espera mínimo antes de colocar otra orden pendiente
+PENDING_ORDER_EXPIRY_HOURS = 8.0 # Tiempo en horas para cancelar automáticamente órdenes pendientes no ejecutadas
 ORDER_COOLDOWN_MINUTES = 30.0 # Minutos de espera antes de permitir otra orden Limit duplicada
 
 # Configuración de Estrategia SMC

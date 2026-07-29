@@ -99,3 +99,12 @@ def get_pending_orders():
     if orders is None:
         return []
     return orders
+
+def cancel_pending_order(ticket):
+    """Cancela una orden pendiente dada su ticket"""
+    request = {
+        "action": mt5.TRADE_ACTION_REMOVE,
+        "order": ticket
+    }
+    result = mt5.order_send(request)
+    return result
